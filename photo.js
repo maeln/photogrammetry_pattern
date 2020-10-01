@@ -1,17 +1,13 @@
-const tri = new Path2D("m57 62-50-27 48-30 0.93 29z");
-const star = new Path2D(
-  "m143 58-10-17-18-9.1 17-10 9.1-18 10 17 18 9.1-17 10z"
-);
-const blaze = new Path2D(
-  "m70 53 2.9-18-13-12 18-2.6 7.8-16 7.9 16 18 2.5-13 12 3.1 18-16-8.2z"
-);
-const pac = new Path2D(
-  "m-31 114a27 29 0 0 1-32-11 27 29 0 0 1 4.3-36 27 29 0 0 1 34-2.3 27 29 0 0 1 8.5 36l-24-12z"
-);
-
+const left = document.getElementById("left");
 const canvas = document.getElementById("mcv");
 const ctx = canvas.getContext("2d");
-const { width, height } = canvas.getBoundingClientRect();
+
+let { width, height } = left.getBoundingClientRect();
+canvas.width = width;
+canvas.height = height;
+
+// const ratio = Math.min(width / referenceWidth, height / referenceHeight);
+// ctx.scale(ratio, ratio);
 
 let backgroundColor = "black";
 let objNum = 25;
@@ -32,9 +28,9 @@ const drawCircle = () => {
 };
 
 const drawRect = () => {
-  const width = randRange(figMinSize, figMaxSize);
+  const fwidth = randRange(figMinSize, figMaxSize);
   const c = new Path2D();
-  c.rect(0, 0, width, width);
+  c.rect(0, 0, fwidth, fwidth);
   ctx.stroke(c);
   ctx.fill(c);
 };
@@ -48,10 +44,18 @@ const drawPattern = () => {
   // the circle
   const circleSpacing = 5;
   var circle = new Path2D();
-  circle.arc(width / 2, height / 2, width / 2 - circleSpacing, 0, 2 * Math.PI);
+
+  const minSize = Math.min(width, height);
+  circle.arc(
+    width / 2,
+    height / 2,
+    minSize / 2 - circleSpacing,
+    0,
+    2 * Math.PI
+  );
 
   ctx.lineWidth = 2;
-  ctx.strokeStyle = "white";
+  ctx.strokeStyle = backgroundColor === "white" ? "black" : "white";
   ctx.stroke(circle);
 
   const rectWidth = 5;
@@ -70,7 +74,7 @@ const drawPattern = () => {
     ctx.save();
     const rad = ((2 * Math.PI) / step) * d;
     ctx.rotate(rad);
-    ctx.translate(0, -height / 2 + circleSpacing);
+    ctx.translate(0, -minSize / 2 + circleSpacing);
     clockLine(d, step);
     ctx.restore();
   }
@@ -147,5 +151,14 @@ objMinSizeInput.addEventListener("change", (event) => {
 
 objMaxSizeInput.addEventListener("change", (event) => {
   figMaxSize = event.target.value;
+  drawPattern();
+});
+
+window.addEventListener("resize", () => {
+  const { width: nw, height: nh } = left.getBoundingClientRect();
+  canvas.width = nw;
+  canvas.height = nh;
+  width = nw;
+  height = nh;
   drawPattern();
 });
