@@ -8,7 +8,19 @@
 </head>
 
 <body>
-    <canvas id="mcv" width="500px" height="500px"></canvas>
+    <div id="container">
+        <div id="left">
+            <canvas id="mcv" width="500px" height="500px"></canvas>
+        </div>
+        <div id="right">
+            <div id="bg-color">
+                <input type="radio" id="black" name="bgcol" value="black" checked>
+                <label for="black">Black</label>
+                <input type="radio" id="white" name="bgcol" value="white">
+                <label for="white">White</label>
+            </div>
+        </div>
+    </div>
     <script src="photo.js"></script>
 </body>
 
