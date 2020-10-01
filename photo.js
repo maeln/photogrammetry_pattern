@@ -16,8 +16,28 @@ const { width, height } = canvas.getBoundingClientRect();
 let backgroundColor = "black";
 let objNum = 25;
 
-const figWidth = 15;
-const figHeight = 15;
+let figMinSize = 15;
+let figMaxSize = 30;
+
+const randRange = (min, max) => {
+  return Math.random() * (max - min) + min;
+};
+
+const drawCircle = () => {
+  const diam = randRange(figMinSize, figMaxSize);
+  const c = new Path2D();
+  c.arc(0, 0, diam / 2, 0, 2 * Math.PI);
+  ctx.stroke(c);
+  ctx.fill(c);
+};
+
+const drawRect = () => {
+  const width = randRange(figMinSize, figMaxSize);
+  const c = new Path2D();
+  c.rect(0, 0, width, width);
+  ctx.stroke(c);
+  ctx.fill(c);
+};
 
 const drawPattern = () => {
   ctx.save();
@@ -55,33 +75,18 @@ const drawPattern = () => {
     ctx.restore();
   }
 
-  const drawCircle = () => {
-    const c = new Path2D();
-    c.arc(0, 0, figWidth / 2, 0, 2 * Math.PI);
-    ctx.stroke(c);
-    ctx.fill(c);
-  };
-
-  const drawRect = () => {
-    const c = new Path2D();
-    c.rect(0, 0, figWidth, figHeight);
-    ctx.stroke(c);
-    ctx.fill(c);
-  };
-
   for (let i = 0; i < objNum; ++i) {
     ctx.save();
 
-    // We should really try to use a low descrepency noise for this
+    const radius =
+      (width / 2 - figMaxSize - circleSpacing) * Math.sqrt(Math.random());
+    const theta = 2 * Math.PI * Math.random();
+    const tx = radius * Math.cos(theta);
+    const ty = radius * Math.sin(theta);
 
-    const rot1 = 2 * Math.PI * Math.random();
-    const rot2 = 2 * Math.PI * Math.random();
-    const radius = (width / 2 - figWidth - circleSpacing) * Math.random();
-    const tx = radius * Math.cos(rot1);
-    const ty = radius * Math.sin(rot1);
-
+    const rot = 2 * Math.PI * Math.random();
     ctx.translate(tx, ty);
-    ctx.rotate(rot2);
+    ctx.rotate(rot);
 
     ctx.lineWidth = 4;
     const colRnd = Math.random();
@@ -129,5 +134,18 @@ objNumberSlider.addEventListener("change", (event) => {
 objNumberText.addEventListener("change", (event) => {
   objNum = event.target.value;
   objNumberSlider.value = event.target.value;
+  drawPattern();
+});
+
+const objMinSizeInput = document.getElementById("objsize-min");
+const objMaxSizeInput = document.getElementById("objsize-max");
+
+objMinSizeInput.addEventListener("change", (event) => {
+  figMinSize = event.target.value;
+  drawPattern();
+});
+
+objMaxSizeInput.addEventListener("change", (event) => {
+  figMaxSize = event.target.value;
   drawPattern();
 });
