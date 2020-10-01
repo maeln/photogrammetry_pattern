@@ -1,32 +1,37 @@
 <!DOCTYPE html>
 <html>
-
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Photo</title>
-</head>
+  </head>
 
-<body>
+  <body>
     <div id="container">
-        <div id="left">
-            <canvas id="mcv" width="500px" height="500px"></canvas>
+      <div id="left">
+        <canvas id="mcv" width="500px" height="500px"></canvas>
+      </div>
+      <div id="right">
+        <div id="bg-color">
+          <input type="radio" id="black" name="bgcol" value="black" checked />
+          <label for="black">Black</label>
+          <input type="radio" id="white" name="bgcol" value="white" />
+          <label for="white">White</label>
         </div>
-        <div id="right">
-            <div id="bg-color">
-                <input type="radio" id="black" name="bgcol" value="black" checked>
-                <label for="black">Black</label>
-                <input type="radio" id="white" name="bgcol" value="white">
-                <label for="white">White</label>
-            </div>
 
-            <div id="obj-number">
-                <input type="range" min="0" max="50" value="25" class="slider" id="objnumber-slider">
-                <input type="text" value="25" id="objnumber-text">
-            </div>
+        <div id="obj-number">
+          <input
+            type="range"
+            min="0"
+            max="50"
+            value="25"
+            class="slider"
+            id="objnumber-slider"
+          />
+          <input type="text" value="25" id="objnumber-text" />
         </div>
+      </div>
     </div>
     <script src="photo.js"></script>
-</body>
-
+  </body>
 </html>
