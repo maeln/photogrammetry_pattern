@@ -7,8 +7,16 @@ canvas.width = width;
 canvas.height = height;
 const minSizeImg = Math.min(width, height);
 
-// const ratio = Math.min(width / referenceWidth, height / referenceHeight);
-// ctx.scale(ratio, ratio);
+// Init UI value
+const bgRadios = document.querySelectorAll('input[type=radio][name="bgcol"]');
+const objNumberSlider = document.getElementById("objnumber-slider");
+const objNumberText = document.getElementById("objnumber-text");
+const objMinSizeInput = document.getElementById("objsize-min");
+const objMaxSizeInput = document.getElementById("objsize-max");
+objNumberSlider.value = 25;
+objNumberText.value = 25;
+objMinSizeInput.value = 15;
+objMaxSizeInput.value = 30;
 
 let backgroundColor = "black";
 let objNum = 25;
@@ -33,6 +41,8 @@ const drawRect = () => {
 };
 
 const drawClock = (circleSpacing) => {
+  ctx.save();
+
   // the circle
   var circle = new Path2D();
 
@@ -68,6 +78,8 @@ const drawClock = (circleSpacing) => {
     clockLine(d, step);
     ctx.restore();
   }
+
+  ctx.restore();
 };
 
 const drawPattern = () => {
@@ -79,6 +91,7 @@ const drawPattern = () => {
   const circleSpacing = 5;
 
   const s = poissonCircle(objNum);
+  ctx.save();
   ctx.translate(width / 2, height / 2); // move origin to center
   for (let i = 0; i < objNum; ++i) {
     ctx.save();
@@ -118,9 +131,7 @@ const drawPattern = () => {
   ctx.restore();
 };
 
-drawPattern("black", 25);
-
-const bgRadios = document.querySelectorAll('input[type=radio][name="bgcol"]');
+drawPattern();
 
 bgRadios.forEach((radio) => {
   radio.addEventListener("change", (event) => {
@@ -128,9 +139,6 @@ bgRadios.forEach((radio) => {
     drawPattern();
   });
 });
-
-const objNumberSlider = document.getElementById("objnumber-slider");
-const objNumberText = document.getElementById("objnumber-text");
 
 objNumberSlider.addEventListener("change", (event) => {
   objNum = event.target.value;
@@ -143,9 +151,6 @@ objNumberText.addEventListener("change", (event) => {
   objNumberSlider.value = event.target.value;
   drawPattern();
 });
-
-const objMinSizeInput = document.getElementById("objsize-min");
-const objMaxSizeInput = document.getElementById("objsize-max");
 
 objMinSizeInput.addEventListener("change", (event) => {
   figMinSize = event.target.value;
