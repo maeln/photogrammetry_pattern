@@ -5,7 +5,6 @@ const ctx = canvas.getContext("2d");
 let { width, height } = left.getBoundingClientRect();
 canvas.width = width;
 canvas.height = height;
-const minSizeImg = Math.min(width, height);
 
 // const ratio = Math.min(width / referenceWidth, height / referenceHeight);
 // ctx.scale(ratio, ratio);
@@ -15,6 +14,10 @@ let objNum = 25;
 
 let figMinSize = 15;
 let figMaxSize = 30;
+
+const randRange = (min, max) => {
+  return Math.random() * (max - min) + min;
+};
 
 const drawCircle = () => {
   const diam = randRange(figMinSize, figMaxSize);
@@ -32,14 +35,21 @@ const drawRect = () => {
   ctx.fill(c);
 };
 
-const drawClock = (circleSpacing) => {
+const drawPattern = () => {
+  ctx.save();
+  // background
+  ctx.fillStyle = backgroundColor;
+  ctx.fillRect(0, 0, width, height);
+
   // the circle
+  const circleSpacing = 5;
   var circle = new Path2D();
 
+  const minSize = Math.min(width, height);
   circle.arc(
     width / 2,
     height / 2,
-    minSizeImg / 2 - circleSpacing,
+    minSize / 2 - circleSpacing,
     0,
     2 * Math.PI
   );
@@ -64,29 +74,19 @@ const drawClock = (circleSpacing) => {
     ctx.save();
     const rad = ((2 * Math.PI) / step) * d;
     ctx.rotate(rad);
-    ctx.translate(0, -minSizeImg / 2 + circleSpacing);
+    ctx.translate(0, -minSize / 2 + circleSpacing);
     clockLine(d, step);
     ctx.restore();
   }
-};
 
-const drawPattern = () => {
-  ctx.save();
-  // background
-  ctx.fillStyle = backgroundColor;
-  ctx.fillRect(0, 0, width, height);
-
-  const circleSpacing = 5;
-
-  const s = poissonCircle(objNum);
-  ctx.translate(width / 2, height / 2); // move origin to center
   for (let i = 0; i < objNum; ++i) {
     ctx.save();
 
-    // const radius = (width / 2 - figMaxSize - circleSpacing) * Math.sqrt(s[i].x);
-    // const theta = 2 * Math.PI * s[i].y;
-    const tx = s[i].x * (minSizeImg / 2 - figMaxSize - circleSpacing); // radius * Math.cos(theta);
-    const ty = s[i].y * (minSizeImg / 2 - figMaxSize - circleSpacing); // radius * Math.sin(theta);
+    const radius =
+      (width / 2 - figMaxSize - circleSpacing) * Math.sqrt(Math.random());
+    const theta = 2 * Math.PI * Math.random();
+    const tx = radius * Math.cos(theta);
+    const ty = radius * Math.sin(theta);
 
     const rot = 2 * Math.PI * Math.random();
     ctx.translate(tx, ty);
@@ -111,9 +111,6 @@ const drawPattern = () => {
 
     ctx.restore();
   }
-  ctx.restore();
-
-  drawClock(circleSpacing);
 
   ctx.restore();
 };
@@ -163,6 +160,5 @@ window.addEventListener("resize", () => {
   canvas.height = nh;
   width = nw;
   height = nh;
-  minSizeImg = Math.min(width, height);
   drawPattern();
 });
