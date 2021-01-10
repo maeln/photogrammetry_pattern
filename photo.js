@@ -5,7 +5,7 @@ const ctx = canvas.getContext("2d");
 let { width, height } = left.getBoundingClientRect();
 canvas.width = width;
 canvas.height = height;
-const minSizeImg = Math.min(width, height);
+let minSizeImg = Math.min(width, height);
 
 // Init UI value
 const bgRadios = document.querySelectorAll('input[type=radio][name="bgcol"]');
@@ -133,6 +133,7 @@ const drawPattern = () => {
 
 drawPattern();
 
+// Handle events here
 bgRadios.forEach((radio) => {
   radio.addEventListener("change", (event) => {
     backgroundColor = event.target.value;
@@ -141,24 +142,24 @@ bgRadios.forEach((radio) => {
 });
 
 objNumberSlider.addEventListener("change", (event) => {
-  objNum = event.target.value;
+  objNum = Number(event.target.value);
   objNumberText.value = event.target.value;
   drawPattern();
 });
 
 objNumberText.addEventListener("change", (event) => {
-  objNum = event.target.value;
+  objNum = Number(event.target.value);
   objNumberSlider.value = event.target.value;
   drawPattern();
 });
 
 objMinSizeInput.addEventListener("change", (event) => {
-  figMinSize = event.target.value;
+  figMinSize = Number(event.target.value);
   drawPattern();
 });
 
 objMaxSizeInput.addEventListener("change", (event) => {
-  figMaxSize = event.target.value;
+  figMaxSize = Number(event.target.value);
   drawPattern();
 });
 
