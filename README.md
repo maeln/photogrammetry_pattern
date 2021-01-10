@@ -11,3 +11,8 @@ When you want to use photogrammetry has a way to 3d scan small objects using a t
 One workaround for this issue is to print a pattern on the turntable that is easily detectable by the software and help it tack point of interest in order for it to reconstruct the 3d model.
 
 This project aim to make it easy to create such a pattern with the properties of having easily identifiable objects, even with low resolution shots.
+
+## Exemple
+
+Here is an example of one pattern this project can generate :
+![Photogrammetry pattern](/canvas.png)
