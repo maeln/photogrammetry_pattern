@@ -18,6 +18,11 @@ objNumberText.value = 25;
 objMinSizeInput.value = 15;
 objMaxSizeInput.value = 30;
 
+const canvasHeight = document.getElementById("canvas-height");
+const canvasWidth = document.getElementById("canvas-width");
+canvasWidth.value = width;
+canvasHeight.value = height;
+
 let backgroundColor = "black";
 let objNum = 25;
 
@@ -106,10 +111,10 @@ const drawPattern = () => {
     ctx.rotate(rot);
 
     ctx.lineWidth = 4;
-    const colRnd = Math.random();
-    ctx.fillStyle = `hsl(${Math.floor(colRnd * 360)},100%,50%)`;
+    const colorValue = (360.0 / objNum) * i;
+    ctx.fillStyle = `hsl(${Math.floor(colorValue)},100%,50%)`;
     ctx.strokeStyle = `hsl(${Math.floor(
-      (colRnd * 360 + 180) % 360
+      (colorValue * 360 + 180) % 360
     )}, 100%, 50%)`;
 
     const elem = Math.floor(Math.random() * 2);
@@ -160,6 +165,20 @@ objMinSizeInput.addEventListener("change", (event) => {
 
 objMaxSizeInput.addEventListener("change", (event) => {
   figMaxSize = Number(event.target.value);
+  drawPattern();
+});
+
+canvasHeight.addEventListener("change", (event) => {
+  canvas.height = Number(event.target.value);
+  height = Number(event.target.value);
+  minSizeImg = Math.min(width, height);
+  drawPattern();
+});
+
+canvasWidth.addEventListener("change", (event) => {
+  canvas.width = Number(event.target.value);
+  width = Number(event.target.value);
+  minSizeImg = Math.min(width, height);
   drawPattern();
 });
 
